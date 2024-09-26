@@ -1,0 +1,115 @@
+mysql> create database blood_donation_camp;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use blood_donation_camp;
+Database changed
+
+mysql> create table donate(
+    -> id int auto_increment primary key,
+    -> first_name varchar(20),
+    -> last_name varchar(20),
+    -> dob date,
+    -> city varchar(20),
+    -> age varchar(3),
+    -> weight int,
+    -> email varchar(50),
+    -> phone double,
+    -> blood_group varchar(3)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table requirement(
+    -> id int auto_increment primary key,
+    -> first_name varchar(20),
+    -> last_name varchar(20),
+    -> dob date,
+    -> city varchar(20),
+    -> age varchar(3),
+    -> weight int,
+    -> email varchar(50),
+    -> phone double,
+    -> blood_group varchar(3)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table blood_count(
+    -> blood_group varchar(3) primary key,
+    -> count int default 0
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+//trigger for update count of blood group
+mysql> DELIMITER //
+mysql> CREATE TRIGGER after_blood_insert
+    -> AFTER INSERT ON donate
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     INSERT INTO blood_count (blood_group, count)
+    ->     VALUES (NEW.blood_group, 1)
+    ->     ON DUPLICATE KEY UPDATE count = count + 1;
+    -> END;
+    -> //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TRIGGER after_blood_delete
+    -> AFTER DELETE ON donate
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     -- Decrement the count for the deleted blood group
+    ->     UPDATE blood_count
+    ->     SET count = count - 1
+    ->     WHERE blood_group = OLD.blood_group;
+    -> END;
+    -> //
+Query OK, 0 rows affected (0.02 sec)
+
+//Create a log table to track changes
+mysql> CREATE TABLE log_table (
+    ->     id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     action VARCHAR(10),
+    ->     table_name VARCHAR(20),
+    ->     record_id INT,
+    ->     blood_group VARCHAR(3),
+    ->     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+//Trigger to update blood_count and log the change when data is inserted into the requirement table
+mysql> DELIMITER //
+mysql> CREATE TRIGGER after_insert_requirement
+    -> AFTER INSERT ON requirement
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     UPDATE blood_count
+    ->     SET count = count - 1
+    ->     WHERE blood_group = NEW.blood_group;
+    ->
+    ->     INSERT INTO log_table (action, table_name, record_id, blood_group)
+    ->     VALUES ('DELETE', 'blood_count', NULL, NEW.blood_group);
+    -> END;
+    -> //
+Query OK, 0 rows affected (0.02 sec)
+
+//Trigger to log the change when data is deleted from the requirement table
+mysql> DELIMITER //
+mysql> CREATE TRIGGER after_delete_requirement
+    -> AFTER DELETE ON requirement
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     INSERT INTO log_table (action, table_name, record_id, blood_group)
+    ->     VALUES ('DELETE', 'requirement', OLD.id, OLD.blood_group);
+    -> END;
+    -> //
+Query OK, 0 rows affected (0.02 sec)
+
+//Trigger to log the change when data is deleted from the donate table
+DELIMITER //
+mysql> CREATE TRIGGER after_delete_donate
+    -> AFTER DELETE ON donate
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     INSERT INTO log_table (action, table_name, record_id, blood_group)
+    ->     VALUES ('DELETE', 'donate', OLD.id, OLD.blood_group);
+    -> END;
+    -> //
+Query OK, 0 rows affected (0.02 sec)
