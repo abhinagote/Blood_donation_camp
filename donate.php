@@ -296,8 +296,10 @@ if (isset($_POST["submit_btn"])) {
   $insert = mysqli_query($connect, "insert into donate(first_name, last_name, dob, city, age, weight, email, phone, blood_group) values('$first_name','$last_name','$dob','$city','$age','$weight','$email','$phone','$blood_group')") or die(mysqli_error($connect));
 
   if ($insert) {
-    echo "window.alert('data inserted sucessfully')";
-  } else {
+    echo "<script>window.location.href='certificate.php?name=$first_name $last_name&blood_group=$blood_group&date=".date('Y-m-d')."';</script>";
+  }
+  
+  else {
     echo "window.alert('data error')";
   }
 }
