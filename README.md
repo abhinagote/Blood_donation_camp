@@ -28,7 +28,18 @@ The **Blood Donation Camp** project is a community-driven initiative aimed at en
 3. Start the local server (XAMPP/WAMP).  
 4. Open the project in the browser: `http://localhost/blood_donation_camp`.  
 
-## 📸 Screenshots   
+## 📸 Screenshots 
+
+![image](https://github.com/user-attachments/assets/7cdff832-b616-4acd-a0da-7f87b158f644)
+![image](https://github.com/user-attachments/assets/5a0e0a95-4945-4aa1-94a7-e272c8a11153)
+![image](https://github.com/user-attachments/assets/a1b24064-640e-448c-9152-844395fa0bdf)
+![image](https://github.com/user-attachments/assets/2619732a-95ff-40fd-b671-09a380564b0c)
+![image](https://github.com/user-attachments/assets/6b04dd48-e9a0-4331-8ccc-e1953be25de8)
+![image](https://github.com/user-attachments/assets/c9c63605-1d0f-4fde-acb4-0806101718da)
+![image](https://github.com/user-attachments/assets/a843f6c8-964a-4e6e-bc30-2207422135e7)
+![image](https://github.com/user-attachments/assets/0b7864d0-cb9a-4c78-8893-c07ebc48d45e)
+![image](https://github.com/user-attachments/assets/8b8ec8a5-514a-4ee3-9140-7d56d1649be2)
+![image](https://github.com/user-attachments/assets/8401b7ec-c599-4013-8a4a-730c2b526c3c)
 
 ## 👥 Team Members  
 - **Abhay Dinesh Nagote** - Database Management, Backend Development, Frontend Development 
