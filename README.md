@@ -49,7 +49,3 @@ The **Blood Donation Camp** project is a community-driven initiative aimed at en
 ## 📜 License  
 This project is open-source and available under the MIT License.  
 
-## Screenshots
-
-
-
